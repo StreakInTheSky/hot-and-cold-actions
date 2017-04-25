@@ -25,47 +25,55 @@ export const guessReducer = (state = initialState, action) => {
       }
     }
 
-    if (checkGuess(state.guesses, action.payload)) {
-      return Object.assign(state, {
-        response: 'Already guessed that'
-      })
-    } else if (action.payload === state.correctAnswer) {
-      return Object.assign(state, {
-        response: 'Correct!'
-      })
-    } else if (Math.abs(action.payload - state.correctAnswer) < 20) {
-      state.guesses.push(action.payload);
-      return Object.assign(state, {
-        response: 'hot'
-      });
-    } else {
-      state.guesses.push(action.payload);
-      return Object.assign(state, {
-        response: 'cold'
-      });
-    }
-
-
-    // // if no guesses, set the first guess as the payload
-    // if (!state.guesses.length) {
-    //   Object.assign(state, { guesses: state.guesses.push(action.payload) });
-    // }
-
-    // if (Math.abs(action.payload - state.correctAnswer) < state.guesses[state.guesses.length - 1]) {
+    // if (checkGuess(state.guesses, action.payload)) {
     //   return Object.assign(state, {
-    //     guesses: state.guesses.push(action.payload),
-    //     response: 'hotter'
-    //   })
-    // } else if (Math.abs(action.payload - state.correctAnswer) > state.guesses[state.guesses.length - 1]) {
-    //   return Object.assign(state, {
-    //     guesses: state.guesses.push(action.payload),
-    //     response: 'colder'
+    //     response: 'Already guessed that'
     //   })
     // } else if (action.payload === state.correctAnswer) {
     //   return Object.assign(state, {
-    //     response: 'correct'
+    //     response: 'Correct!'
     //   })
+    // } else if (Math.abs(action.payload - state.correctAnswer) < 20) {
+    //   state.guesses.push(action.payload);
+    //   return Object.assign(state, {
+    //     response: 'hot'
+    //   });
+    // } else {
+    //   state.guesses.push(action.payload);
+    //   return Object.assign(state, {
+    //     response: 'cold'
+    //   });
     // }
+
+
+    // if no guesses, set the first guess as the payload
+    if (!state.guesses.length) {
+      return Object.assign(state, {
+        response: '',
+        guesses: [...state.guesses, action.payload]
+      })
+    } else if (checkGuess(state.guesses, action.payload)) {
+      return Object.assign(state, {
+        response: 'Already guessed that.'
+      })
+    }
+    if (action.payload === state.correctAnswer) {
+      return Object.assign(state, {
+        response: 'correct'
+      })
+    } else if (Math.abs(action.payload - state.correctAnswer) < Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
+      console.log('hotter: ', [...state.guesses, action.payload])
+      return Object.assign(state, {
+        response: 'hotter',
+        guesses: [...state.guesses, action.payload]
+      })
+    } else if (Math.abs(action.payload - state.correctAnswer) > Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
+      console.log('colder: ', [...state.guesses, action.payload])
+      return Object.assign(state, {
+        response: 'colder',
+        guesses: [...state.guesses, action.payload]
+      })
+    }
   }
 
   return state;
