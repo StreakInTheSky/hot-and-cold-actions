@@ -41,32 +41,28 @@ export const guessReducer = (state = initialState, action) => {
 
     // if no guesses, set the first guess as the payload
     if (checkGuess(state.guesses, action.payload)) {
-      console.log('you already guessed ', [...state.guesses, action.payload])
       return Object.assign(state, {
-        response: 'Already guessed that.'
+        response: 'duplicate'
       })
     }
     if (action.payload === state.correctAnswer) {
       return Object.assign(state, {
-        response: 'Correct!'
+        response: 'correct'
       })
     } else if (!state.isClose && Math.abs(action.payload - state.correctAnswer) < 30) {
       checkClose();
-      console.log('hot: ', [...state.guesses, action.payload])
       return Object.assign(state, {
         response: 'hot',
         guesses: [...state.guesses, action.payload]
       });
     } else if (!state.isClose && Math.abs(action.payload - state.correctAnswer) > 30){
       checkClose();
-      console.log('cold: ', [...state.guesses, action.payload])
       return Object.assign(state, {
         response: 'cold',
         guesses: [...state.guesses, action.payload]
       });
     } else if (state.isClose && Math.abs(action.payload - state.correctAnswer) < Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
       checkClose();
-      console.log('hotter: ', [...state.guesses, action.payload])
       return Object.assign(state, {
         response: 'hotter',
         guesses: [...state.guesses, action.payload]
@@ -74,11 +70,9 @@ export const guessReducer = (state = initialState, action) => {
     } else if (state.isClose && Math.abs(action.payload - state.correctAnswer) > Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
       checkClose();
       let response = 'colder';
-      console.log(state.isClose);
       if (!state.isClose) {
         response = 'cold';
       }
-      console.log(`${response}: `, [...state.guesses, action.payload])
       return Object.assign(state, {
         response: response,
         guesses: [...state.guesses, action.payload]
