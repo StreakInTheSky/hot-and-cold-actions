@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Guess from './guess';
+import GuessInput from './guess-input';
+import * as actions from '../actions';
 
-export default class Game extends Component {
+export class Game extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      guesses: [2, 4, 6],
-      response: "correct"
-    }
-    this.submitGuess = this.submitGuess.bind(this);
-  }
-
-  componentWillMount() {
-    // TODO: start game on load
+    this.startGame = this.startGame.bind(this);
   }
 
   startGame() {
-    // TODO: start new game
+    this.props.dispatch(actions.initGame());
   }
 
-  submitGuess() {
-    // TODO: submit guess
+  componentWillMount() {
+    this.props.dispatch(actions.initGame());
   }
+
 
   render() {
     return (
       <div className="container">
         <button className="new-game btn btn-primary" onClick={this.startGame}>New Game</button>
-        <Guess response={this.state.response} guessAmount={this.state.guesses.length} submitGuess={this.submitGuess} />
+          <GuessInput />
       </div>
     )
   }
 }
+
+export default connect()(Game);

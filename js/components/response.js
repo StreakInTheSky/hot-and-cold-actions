@@ -1,8 +1,7 @@
 import React from 'react'
 
 export default function Response(props) {
-  function getReponse() {
-    console.log(props.response)
+  function getResponse() {
     if (props.response === 'duplicate') {
       return <div className="alert alert-warning" role="alert">You already guessed that.</div>
     } else if (props.response === 'correct') {
@@ -20,5 +19,5 @@ export default function Response(props) {
     }
   }
 
-  return getReponse();
+  return getResponse()
 }
