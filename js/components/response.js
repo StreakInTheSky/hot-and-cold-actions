@@ -19,5 +19,5 @@ export default function Response(props) {
     }
   }
 
-  return getResponse()
+  return getResponse();
 }

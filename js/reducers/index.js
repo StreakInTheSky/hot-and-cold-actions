@@ -17,9 +17,10 @@ export const guessReducer = (state = initialState, action) => {
       response: ''
     })
   } else if (action.type === actions.COMPARE_NUMBER) {
+    console.log(action.payload)
 
     // checks for duplicate guesses
-    function checkGuess(list, guess) {
+    function checkDuplicate(list, guess) {
       for (let i = 0; i < list.length; i++) {
         if (list[i] === guess) {
           return true;
@@ -27,6 +28,7 @@ export const guessReducer = (state = initialState, action) => {
       }
     }
 
+    // checks if guess is close to change isClose flag
     function checkClose() {
       if (Math.abs(action.payload - state.correctAnswer) < 30) {
         return Object.assign(state, {
@@ -39,12 +41,12 @@ export const guessReducer = (state = initialState, action) => {
       }
     }
 
-    // if no guesses, set the first guess as the payload
-    if (checkGuess(state.guesses, action.payload)) {
+    if (checkDuplicate(state.guesses, action.payload)) {
       return Object.assign(state, {
         response: 'duplicate'
       })
     }
+
     if (action.payload === state.correctAnswer) {
       return Object.assign(state, {
         response: 'correct'

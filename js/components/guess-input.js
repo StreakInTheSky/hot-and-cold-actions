@@ -1,32 +1,35 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import Guess from './guess';
-import * as actions from '../actions';
+import Response from './response';
 
-export class GuessInput extends Component {
-  constructor(props) {
-    super(props);
-    this.submitGuess = this.submitGuess.bind(this);
+export default function GuessInput(props) {
+  let guessInput = null;
+
+  function submitGuess(event) {
+    const guess = guessInput.value;
+
+    guessInput.value = '';
+
+    props.submitGuess(guess, event);
   }
 
-  submitGuess(guess, event) {
-    event.preventDefault();
-    this.props.dispatch(actions.compareNumber(guess));
-  }
-
-  render() {
-    return <Guess submitGuess={this.submitGuess} response={this.props.response} guessAmount={this.props.guesses.length} />
-  }
+  return (
+    <form className="form text-center" onSubmit={submitGuess}>
+      <h3 className="form-heading">Hot(ter) or Cold(er) Game</h3>
+      <div className="form-group">
+        <label htmlFor="inputGuess" className="sr-only">Guess</label>
+        <input ref={ref => guessInput = ref}
+               type="number"
+               id="inputGuess"
+               className="form-control"
+               placeholder="Enter a guess between 1 and 100"
+               required
+               autoFocus />
+      </div>
+      <div className="form-group">
+        <button type="submit" className="btn btn-primary btn-block">Guess</button>
+      </div>
+      <Response response={props.response} guessAmount={props.guessAmount}/>
+    </form>
+  )
 }
-
-const mapStateToProps = (state, props) => {
-  console.log(state)
-
-  return ({
-    guesses: state.guesses,
-    response: state.response
-  })
-}
-
-export default connect(mapStateToProps)(GuessInput);

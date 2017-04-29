@@ -6,6 +6,8 @@ import {Provider} from 'react-redux';
 import store from './store';
 import Game from './components/game';
 
+window.store = store;
+
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Provider store={store}>
