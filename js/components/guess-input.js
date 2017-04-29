@@ -29,7 +29,7 @@ export default function GuessInput(props) {
       <div className="form-group">
         <button type="submit" className="btn btn-primary btn-block">Guess</button>
       </div>
-      <Response response={props.response} isClose={props.isClose} guessAmount={props.guessAmount}/>
+      <Response response={props.response} guessAmount={props.guessAmount}/>
     </form>
   )
 }

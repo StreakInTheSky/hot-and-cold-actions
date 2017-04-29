@@ -17,14 +17,13 @@ export class Guess extends Component {
   }
 
   render() {
-    return <GuessInput submitGuess={this.submitGuess} response={this.props.guess.response} isClose={this.props.guess.isClose} guessAmount={this.props.guess.guesses.length} />
+    return <GuessInput submitGuess={this.submitGuess} response={this.props.response} guessAmount={this.props.guesses.length} />
   }
 }
 
 const mapStateToProps = (state, props) =>  ({
-    guess: state,
-    // guesses: state.guesses,
-    // response: state.response
+    guesses: state.guesses,
+    response: state.response
 })
 
 export default connect(mapStateToProps)(Guess);

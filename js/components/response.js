@@ -5,7 +5,7 @@ export default function Response(props) {
     if (props.response === 'duplicate') {
       return <div className="alert alert-warning" role="alert">You already guessed that.</div>
     } else if (props.response === 'correct') {
-      return <div className="alert alert-success" role="alert">Correct! It only took you <strong>{props.guessAmount}</strong> guesses</div>
+      return <div className="alert alert-success" role="alert">Correct! It only took you <strong>{props.guessAmount}</strong> guesses.</div>
     } else if (props.response === 'hot') {
       return <div className="alert alert-danger" role="alert">Hot!</div>
     } else if (props.response === 'hotter') {
@@ -19,9 +19,5 @@ export default function Response(props) {
     }
   }
 
-  return (
-    <div>
-      <p>{props.isClose}</p>
-      {getResponse()}
-    </div>);
+  return getResponse()
 }
