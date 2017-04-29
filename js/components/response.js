@@ -14,10 +14,14 @@ export default function Response(props) {
       return <div className="alert alert-info" role="alert">cold...</div>
     } else if (props.response === 'colder') {
       return <div className="alert alert-info" role="alert">colder.</div>
-    } else {
+    } else if (!props.response) {
       return null;
     }
   }
 
-  return getResponse();
+  return (
+    <div>
+      <p>{props.isClose}</p>
+      {getResponse()}
+    </div>);
 }

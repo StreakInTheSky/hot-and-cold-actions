@@ -3,21 +3,23 @@ import * as actions from '../actions';
 const initialState = {
   correctAnswer: null,
   guesses: [],
-  response: '',
-  isClose: false
+  response: ''
 };
 
 export const guessReducer = (state = initialState, action) => {
 
   if (action.type === actions.INIT_GAME) {
     const randomNumber = Math.floor(Math.random() * (100 - 1) - 1);
-    return Object.assign(state, {
+    return Object.assign({}, state, {
       correctAnswer: randomNumber,
       guesses: [],
       response: ''
     })
   } else if (action.type === actions.COMPARE_NUMBER) {
-    console.log(action.payload)
+
+    const guess = parseInt(action.payload);
+    const lastGuess = state.guesses[state.guesses.length - 1];
+    let isClose;
 
     // checks for duplicate guesses
     function checkDuplicate(list, guess) {
@@ -28,57 +30,49 @@ export const guessReducer = (state = initialState, action) => {
       }
     }
 
-    // checks if guess is close to change isClose flag
-    function checkClose() {
-      if (Math.abs(action.payload - state.correctAnswer) < 30) {
-        return Object.assign(state, {
-          isClose: true
-        })
-      } else {
-        return Object.assign(state, {
-          isClose: false
-        })
+    function checkHot(num1, num2) {
+      if (Math.abs(num1 - num2) < 20) {
+        return true;
       }
     }
 
-    if (checkDuplicate(state.guesses, action.payload)) {
-      return Object.assign(state, {
+    function checkHotter(num1, num2, reference) {
+      if (Math.abs(num1 - reference) < Math.abs(num2 - reference)) {
+        return true;
+      }
+
+    }
+
+    if (checkDuplicate(state.guesses, guess)) {
+      return Object.assign({}, state, {
         response: 'duplicate'
       })
     }
 
-    if (action.payload === state.correctAnswer) {
-      return Object.assign(state, {
+    if (guess === state.correctAnswer) {
+      return Object.assign({}, state, {
         response: 'correct'
-      })
-    } else if (!state.isClose && Math.abs(action.payload - state.correctAnswer) < 30) {
-      checkClose();
-      return Object.assign(state, {
-        response: 'hot',
-        guesses: [...state.guesses, action.payload]
       });
-    } else if (!state.isClose && Math.abs(action.payload - state.correctAnswer) > 30){
-      checkClose();
-      return Object.assign(state, {
-        response: 'cold',
-        guesses: [...state.guesses, action.payload]
-      });
-    } else if (state.isClose && Math.abs(action.payload - state.correctAnswer) < Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
-      checkClose();
-      return Object.assign(state, {
+    } else if (checkHot(lastGuess, state.correctAnswer) && checkHotter(guess, lastGuess, state.correctAnswer)) {
+      return Object.assign({}, state, {
         response: 'hotter',
-        guesses: [...state.guesses, action.payload]
-      })
-    } else if (state.isClose && Math.abs(action.payload - state.correctAnswer) > Math.abs(state.guesses[state.guesses.length - 1] - state.correctAnswer)) {
-      checkClose();
-      let response = 'colder';
-      if (!state.isClose) {
-        response = 'cold';
-      }
-      return Object.assign(state, {
-        response: response,
-        guesses: [...state.guesses, action.payload]
-      })
+        guesses: [...state.guesses, guess]
+      });
+    } else if (checkHot(lastGuess, state.correctAnswer) && !checkHotter(guess, lastGuess, state.correctAnswer)) {
+      return Object.assign({}, state, {
+        response: 'colder',
+        guesses: [...state.guesses, guess]
+      });
+    } else if (checkHot(guess, state.correctAnswer)) {
+      return Object.assign({}, state, {
+        response: 'hot',
+        guesses: [...state.guesses, guess]
+      });
+    } else {
+      return Object.assign({}, state, {
+        response: 'cold',
+        guesses: [...state.guesses, guess]
+      });
     }
   }
 
