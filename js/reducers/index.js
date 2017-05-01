@@ -3,7 +3,8 @@ import * as actions from '../actions';
 const initialState = {
   correctAnswer: null,
   guesses: [],
-  response: ''
+  response: '',
+  fewestGuesses: null
 };
 
 export const guessReducer = (state = initialState, action) => {

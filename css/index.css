@@ -21,3 +21,9 @@ form {
   right: 5px;
   top: 5px;
 }
+
+.high-score {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}

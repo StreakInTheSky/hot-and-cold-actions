@@ -10,16 +10,26 @@ export class Game extends Component {
     this.props.dispatch(actions.initGame());
 
     this.startGame = this.startGame.bind(this);
+    this.showHighScore = this.showHighScore.bind(this)
   }
 
   startGame() {
     this.props.dispatch(actions.initGame());
   }
 
+  showHighScore() {
+    if (this.props.fewestGuesses) {
+      return `High Score: ${this.props.fewestGuesses} guesses`;
+    } else {
+      return null;
+    }
+  }
+
 
   render() {
     return (
       <div className="container">
+        <p className="high-score">{this.showHighScore()}</p>
         <button className="new-game btn btn-primary" onClick={this.startGame}>New Game</button>
           <Guess />
       </div>
@@ -27,4 +37,6 @@ export class Game extends Component {
   }
 }
 
-export default connect()(Game);
+const mapStateToProps = (state, props) => ({fewestGuesses: state.fewestGuesses});
+
+export default connect(mapStateToProps)(Game);
