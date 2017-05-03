@@ -5,14 +5,17 @@ let state = {
 const express = require('express');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const cors = require('cors')
 
 const app = express();
 
-app.get('/fewest-guesses', (req, res) => res.json(state.fewestGuesses));
+app.use(cors());
+
+app.get('/fewest-guesses', (req, res) => res.json(state));
 app.post('/fewest-guesses', jsonParser, (req, res) => {
+  console.log(res)
   state.fewestGuesses = req.body.fewestGuesses;
   res.status(201).end();
 })
 
-app.listen(process.env.PORT || 8080, () => console.log(
-  `Your app is listening on port ${process.env.PORT || 8080}`));
+app.listen(process.env.PORT || 3000, () => console.log(`Your app is listening on port ${process.env.PORT || 3000}`));

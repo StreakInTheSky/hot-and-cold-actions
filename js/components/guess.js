@@ -11,6 +11,12 @@ export class Guess extends Component {
     this.submitGuess = this.submitGuess.bind(this);
   }
 
+  componentDidUpdate() {
+    if (((this.props.fewestGuesses > this.props.guesses.length) || this.props.fewestGuesses === null) && (this.props.response === 'correct')) {
+      this.props.dispatch(actions.postFewestGuesses(this.props.guesses.length))
+    }
+  }
+
   submitGuess(guess, event) {
     event.preventDefault();
     this.props.dispatch(actions.compareNumber(guess));
@@ -23,7 +29,8 @@ export class Guess extends Component {
 
 const mapStateToProps = (state, props) =>  ({
     guesses: state.guesses,
-    response: state.response
+    response: state.response,
+    fewestGuesses: state.fewestGuesses
 })
 
 export default connect(mapStateToProps)(Guess);

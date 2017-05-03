@@ -7,10 +7,13 @@ import * as actions from '../actions';
 export class Game extends Component {
   constructor(props) {
     super(props);
-    this.props.dispatch(actions.initGame());
-
     this.startGame = this.startGame.bind(this);
     this.showHighScore = this.showHighScore.bind(this)
+  }
+
+  componentWillMount() {
+    this.props.dispatch(actions.fetchFewestGuesses());
+    this.props.dispatch(actions.initGame());
   }
 
   startGame() {

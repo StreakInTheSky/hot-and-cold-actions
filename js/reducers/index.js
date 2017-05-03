@@ -1,4 +1,5 @@
 import * as actions from '../actions';
+import store from '../store';
 
 const initialState = {
   correctAnswer: null,
@@ -10,7 +11,7 @@ const initialState = {
 export const guessReducer = (state = initialState, action) => {
 
   if (action.type === actions.INIT_GAME) {
-    const randomNumber = Math.floor(Math.random() * (100 - 1) - 1);
+    const randomNumber = Math.floor((Math.random() * 100) + 1);
     return Object.assign({}, state, {
       correctAnswer: randomNumber,
       guesses: [],
@@ -52,7 +53,8 @@ export const guessReducer = (state = initialState, action) => {
 
     if (guess === state.correctAnswer) {
       return Object.assign({}, state, {
-        response: 'correct'
+        response: 'correct',
+        guesses: [...state.guesses, guess]
       });
     } else if (checkHot(lastGuess, state.correctAnswer) && checkHotter(guess, lastGuess, state.correctAnswer)) {
       return Object.assign({}, state, {
@@ -75,6 +77,14 @@ export const guessReducer = (state = initialState, action) => {
         guesses: [...state.guesses, guess]
       });
     }
+  } else if (action.type === actions.FETCH_FEWEST_GUESSES_SUCCESS) {
+    return Object.assign({}, state, {
+        fewestGuesses: action.payload
+    });
+  } else if (action.type === actions.FETCH_FEWEST_GUESSES_ERROR) {
+    return Object.assign({}, state, {
+        fewestGuesses: null
+    });
   }
 
   return state;
