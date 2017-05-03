@@ -13,7 +13,6 @@ app.use(cors());
 
 app.get('/fewest-guesses', (req, res) => res.json(state));
 app.post('/fewest-guesses', jsonParser, (req, res) => {
-  console.log(res)
   state.fewestGuesses = req.body.fewestGuesses;
   res.status(201).end();
 })
