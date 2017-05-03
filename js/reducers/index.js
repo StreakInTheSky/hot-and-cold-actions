@@ -56,12 +56,16 @@ export const guessReducer = (state = initialState, action) => {
         response: 'correct',
         guesses: [...state.guesses, guess]
       });
-    } else if (checkHot(lastGuess, state.correctAnswer) && checkHotter(guess, lastGuess, state.correctAnswer)) {
+    } else if (checkHot(lastGuess, state.correctAnswer) &&
+               checkHotter(guess, lastGuess, state.correctAnswer)
+    ) {
       return Object.assign({}, state, {
         response: 'hotter',
         guesses: [...state.guesses, guess]
       });
-    } else if (checkHot(lastGuess, state.correctAnswer) && !checkHotter(guess, lastGuess, state.correctAnswer)) {
+    } else if (checkHot(lastGuess, state.correctAnswer) &&
+               !checkHotter(guess, lastGuess, state.correctAnswer)
+    ) {
       return Object.assign({}, state, {
         response: 'colder',
         guesses: [...state.guesses, guess]

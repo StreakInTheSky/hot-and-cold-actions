@@ -12,8 +12,11 @@ export class Guess extends Component {
   }
 
   componentDidUpdate() {
-    if (((this.props.fewestGuesses > this.props.guesses.length) || this.props.fewestGuesses === null) && (this.props.response === 'correct')) {
-      this.props.dispatch(actions.postFewestGuesses(this.props.guesses.length))
+    if (
+      ((this.props.fewestGuesses > this.props.guesses.length) || this.props.fewestGuesses === null) &&
+      (this.props.response === 'correct')
+    ) {
+      this.props.dispatch(actions.postFewestGuesses(this.props.guesses.length));
     }
   }
 
@@ -23,7 +26,9 @@ export class Guess extends Component {
   }
 
   render() {
-    return <GuessInput submitGuess={this.submitGuess} response={this.props.response} guessAmount={this.props.guesses.length} />
+    return <GuessInput submitGuess={this.submitGuess}
+                       response={this.props.response}
+                       guessAmount={this.props.guesses.length} />
   }
 }
 
